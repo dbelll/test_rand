@@ -37,10 +37,10 @@ void analyze_results(unsigned n, float *randsCPU, float *randsGPU)
 	for (int i = 1; i < n; i++) {
 		
 		if (0 == (i % 10000000)) {
-			float meanCPU = totCPU/n;
-			float meanGPU = totGPU/n;
-			float sdCPU = sqrtf(totCPU2/n - meanCPU * meanCPU);
-			float sdGPU = sqrtf(totGPU2/n - meanGPU * meanGPU);
+			float meanCPU = totCPU/10000000;
+			float meanGPU = totGPU/10000000;
+			float sdCPU = sqrtf(totCPU2/10000000 - meanCPU * meanCPU);
+			float sdGPU = sqrtf(totGPU2/10000000 - meanGPU * meanGPU);
 			printf("CPU avg =%10.6f, GPU avg =%10.6f, max difference =%9.6f\n", meanCPU, meanGPU, maxDiff);
 			printf("CPU  sd =%10.6f,  GPU sd = %10.6f\n", sdCPU, sdGPU);
 			printf("CPU min =%10.6f, GPU min =%10.6f\n", minCPU, minGPU);
