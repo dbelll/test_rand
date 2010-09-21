@@ -17,6 +17,8 @@
 		10B1AFE81247EF9900FD2988 /* cuda_utils.cu */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cuda; path = cuda_utils.cu; sourceTree = "<group>"; };
 		10B1AFE91247EF9900FD2988 /* cuda_rand.cu */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cuda; path = cuda_rand.cu; sourceTree = "<group>"; };
 		10B1B14312484F4000FD2988 /* testscript.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = testscript.sh; sourceTree = "<group>"; };
+		10B1B1591248D70900FD2988 /* res_testscript.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = res_testscript.sh; sourceTree = "<group>"; };
+		10B1B15A1248D71F00FD2988 /* test_rand.numbers */ = {isa = PBXFileReference; lastKnownFileType = file; path = test_rand.numbers; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -29,7 +31,6 @@
 				10B1AFE71247EF9900FD2988 /* cuda_utils.h */,
 				10B1AFE81247EF9900FD2988 /* cuda_utils.cu */,
 				10B1AFE91247EF9900FD2988 /* cuda_rand.cu */,
-				10B1B14312484F4000FD2988 /* testscript.sh */,
 			);
 			name = source;
 			sourceTree = "<group>";
@@ -37,7 +38,10 @@
 		10294D9C11A1B93D00AAF551 /* other */ = {
 			isa = PBXGroup;
 			children = (
+				10B1B15A1248D71F00FD2988 /* test_rand.numbers */,
 				106FF7F5119EE68B000CD6C8 /* Makefile */,
+				10B1B1591248D70900FD2988 /* res_testscript.sh */,
+				10B1B14312484F4000FD2988 /* testscript.sh */,
 				10294D4211A1B49500AAF551 /* profile_config */,
 				10294DA311A1B99300AAF551 /* test_rand_profile_log.csv */,
 			);

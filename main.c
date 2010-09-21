@@ -35,6 +35,21 @@ void analyze_results(unsigned n, float *randsCPU, float *randsGPU)
 	float minGPU = randsGPU[0];
 	float maxGPU = randsGPU[0];
 	for (int i = 1; i < n; i++) {
+		
+		if (0 == (i % 10000000)) {
+			float meanCPU = totCPU/n;
+			float meanGPU = totGPU/n;
+			float sdCPU = sqrtf(totCPU2/n - meanCPU * meanCPU);
+			float sdGPU = sqrtf(totGPU2/n - meanGPU * meanGPU);
+			printf("CPU avg =%10.6f, GPU avg =%10.6f, max difference =%9.6f\n", meanCPU, meanGPU, maxDiff);
+			printf("CPU  sd =%10.6f,  GPU sd = %10.6f\n", sdCPU, sdGPU);
+			printf("CPU min =%10.6f, GPU min =%10.6f\n", minCPU, minGPU);
+			printf("CPU max =%10.6f, GPU max =%10.6f\n", maxCPU, maxGPU);
+			minCPU = maxCPU = randsCPU[i];
+			minGPU = maxGPU = randsGPU[i];
+			totCPU = totCPU2 = 0.0f;
+			totGPU = totGPU2 = 0.0f;
+		}
 		totCPU += randsCPU[i];
 		totCPU2 += randsCPU[i] * randsCPU[i];
 		
@@ -50,10 +65,10 @@ void analyze_results(unsigned n, float *randsCPU, float *randsGPU)
 		if (diff < 0.0f) diff = -diff;
 		if (diff > maxDiff) maxDiff = diff;
 	}
-	float meanCPU = totCPU/n;
-	float meanGPU = totGPU/n;
-	float sdCPU = sqrtf(totCPU2/n - meanCPU * meanCPU);
-	float sdGPU = sqrtf(totGPU2/n - meanGPU * meanGPU);
+	float meanCPU = totCPU/((n-1)%10000000 + 1);
+	float meanGPU = totGPU/((n-1)%10000000 + 1);
+	float sdCPU = sqrtf(totCPU2/((n-1)%10000000 + 1) - meanCPU * meanCPU);
+	float sdGPU = sqrtf(totGPU2/((n-1)%10000000 + 1) - meanGPU * meanGPU);
 	printf("CPU avg =%10.6f, GPU avg =%10.6f, max difference =%9.6f\n", meanCPU, meanGPU, maxDiff);
 	printf("CPU  sd =%10.6f,  GPU sd = %10.6f\n", sdCPU, sdGPU);
 	printf("CPU min =%10.6f, GPU min =%10.6f\n", minCPU, minGPU);
