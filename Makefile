@@ -58,7 +58,10 @@
 EXECUTABLE	:= test_rand
 
 # Cuda source files (compiled with cudacc)
-CUFILES		:= test_rand.cu cuda_utils.cu
+CUFILES		:= test_rand.cu cuda_utils.cu cuda_rand.cu
+
+# CUDA dependency files
+CU_DEPS		:= cuda_utils.h test_rand.h
 
 # C/C++ source files (compiled with gcc / c++)
 CCFILES		:=  main.c
@@ -67,7 +70,7 @@ CCFILES		:=  main.c
 #INCLUDES = -I/home/dbelll/cuda_libraries/
 
 # compiler flags
-#CUDACCFLAGS = --profile
+CUDACCFLAGS = --ptxas-options=-v
 
 ################################################################################
 # Rules and targets

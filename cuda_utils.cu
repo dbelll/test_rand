@@ -21,30 +21,70 @@ float STOP_TIMER(unsigned int timer, char *message){
 }
 void DELETE_TIMER(unsigned int timer){ cutilCheckError(cutDeleteTimer(timer)); }
 
-
-/*
- *	Random nubmers on the GPU
- */
-
-__device__ unsigned TausStep(unsigned &z, int S1, int S2, int S3, unsigned M)
+float *device_copyf(float *data, unsigned count_data)
 {
-	unsigned b = (((z << S1) ^ z) >> S2);
-	return z = (((z & M) << S3) ^ b);
+	float *d_data = NULL;
+	unsigned size_data = count_data * sizeof(float);
+	#ifdef TRACE_DEVICE_ALLOCATIONS
+		printf("[device_copyf] float data at 0x%p count = %d\n", data, count_data);
+	#endif
+	CUDA_SAFE_CALL(cudaMalloc((void **)&d_data, size_data));
+	CUDA_SAFE_CALL(cudaMemcpy(d_data, data, size_data, cudaMemcpyHostToDevice));
+	return d_data;
 }
 
-__device__ unsigned LCGStep(unsigned &z, unsigned A, unsigned C)
+unsigned *device_copyui(unsigned *data, unsigned count_data)
 {
-	return z = (A*z + C);
+	unsigned *d_data = NULL;
+	unsigned size_data = count_data * sizeof(unsigned);
+	#ifdef TRACE_DEVICE_ALLOCATIONS
+		printf("[device_copyui] unsigned data at 0x%p count = %d\n", data, count_data);
+	#endif
+	CUDA_SAFE_CALL(cudaMalloc((void **)&d_data, size_data));
+	CUDA_SAFE_CALL(cudaMemcpy(d_data, data, size_data, cudaMemcpyHostToDevice));
+	return d_data;
 }
 
-/* generate a random number, uses an array of 4 unsigned ints */
-__device__ float HybridTaus(unsigned *z)
+float *device_allocf(unsigned count_data)
 {
-	return 2.3283064365387e-10 * (
-		TausStep(z[0], 13, 19, 12, 4294967294UL) ^
-		TausStep(z[1], 2, 25, 4, 4294967288UL) ^
-		TausStep(z[2], 3, 11, 17, 4294967280UL) ^
-		LCGStep(z[3], 16654525, 1013904223UL)
-	);
+	float *d_data;
+	#ifdef TRACE_DEVICE_ALLOCATIONS
+		printf("[device_allocf] count = %d\n", count_data);
+	#endif
+	CUDA_SAFE_CALL(cudaMalloc((void **)&d_data, count_data * sizeof(float)));
+	return d_data;
 }
+
+unsigned *device_allocui(unsigned count_data)
+{
+	unsigned *d_data;
+	#ifdef TRACE_DEVICE_ALLOCATIONS
+		printf("[device_allocf] count = %d\n", count_data);
+	#endif
+	CUDA_SAFE_CALL(cudaMalloc((void **)&d_data, count_data * sizeof(unsigned)));
+	return d_data;
+}
+
+float *host_copyf(float *d_data, unsigned count_data)
+{
+	unsigned size_data = count_data * sizeof(float);
+	float *data = (float *)malloc(size_data);
+	#ifdef TRACE_DEVICE_ALLOCATIONS
+		printf("[host_copyf] float data at 0x%p count = %d\n", d_data, size_data);
+	#endif
+	CUDA_SAFE_CALL(cudaMemcpy(data, d_data, size_data, cudaMemcpyDeviceToHost));
+	return data;
+}
+
+unsigned *host_copyui(unsigned *d_data, unsigned count_data)
+{
+	unsigned size_data = count_data * sizeof(unsigned);
+	unsigned *data = (unsigned *)malloc(size_data);
+	#ifdef TRACE_DEVICE_ALLOCATIONS
+		printf("[host_copyf] float data at 0x%p count = %d\n", d_data, size_data);
+	#endif
+	CUDA_SAFE_CALL(cudaMemcpy(data, d_data, size_data, cudaMemcpyDeviceToHost));
+	return data;
+}
+
 
